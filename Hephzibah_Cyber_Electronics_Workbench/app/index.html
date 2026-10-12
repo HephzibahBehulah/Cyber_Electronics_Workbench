@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HEPHZIBAH // CYBER & ELECTRONICS WORKBENCH</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="scanlines"></div>
+<header class="topbar">
+  <div class="brand"><span class="sigil">◆</span><div><b>HEPHZIBAH</b><small>CYBER & ELECTRONICS WORKBENCH</small></div></div>
+  <div class="status"><span id="bridgeDot" class="dot offline"></span><span id="bridgeText">LOCAL BRIDGE: CHECKING</span></div>
+</header>
+
+<div class="layout">
+<aside class="sidebar">
+  <button class="nav active" data-view="cyber">CYBERSECURITY</button>
+  <button class="nav" data-view="electronics">ELECTRONICS</button>
+  <button class="nav" data-view="tools">TOOLS</button>
+  <button class="nav" data-view="learning">LEARNING</button>
+  <div class="side-foot">LOCAL-FIRST // OFFLINE READY</div>
+</aside>
+
+<main>
+<section id="cyber" class="view active">
+  <div class="hero">
+    <div><span class="eyebrow">SECURITY OPERATIONS CONSOLE</span><h1>CYBERSECURITY</h1><p>Recon, network tools, web security, OSINT, password & hash, forensics and controlled lab environments.</p></div>
+    <div class="radar"><span></span><i></i></div>
+  </div>
+  <div class="notice">AUTHORIZED USE ONLY — Use scanners, fuzzers, password tools and interception tools only against systems you own or have explicit permission to test.</div>
+
+  <div class="nmap-panel panel">
+    <div class="panel-head"><span>NMAP // QUICK SCAN</span><span class="muted">LOCAL EXECUTION</span></div>
+    <div class="form-grid">
+      <label>Target<input id="nmapTarget" value="192.168.1.1" placeholder="IP / hostname / CIDR"></label>
+      <label>Scan type<select id="nmapType">
+        <option value="service">Service Detection (-sV)</option>
+        <option value="quick">Quick (-T4 -F)</option>
+        <option value="ports">Common Ports (-p 22,80,443)</option>
+        <option value="ping">Host Discovery (-sn)</option>
+      </select></label>
+      <button class="run" id="nmapRun">RUN NMAP</button>
+    </div>
+    <pre id="nmapResult">Ready. Enter an authorized target and run a scan.</pre>
+  </div>
+
+  <div id="cyberGrid" class="card-grid"></div>
+</section>
+
+<section id="electronics" class="view">
+  <div class="hero compact"><div><span class="eyebrow">ENGINEERING CALCULATOR ARRAY</span><h1>ELECTRONICS</h1><p>Practical electrical and electronics calculations for study, design and troubleshooting.</p></div></div>
+  <div class="tool-grid">
+    <div class="panel calc"><div class="panel-head">OHM'S LAW</div>
+      <div class="form-grid two"><label>Voltage (V)<input id="ohmV" type="number" step="any" placeholder="e.g. 12"></label><label>Current (A)<input id="ohmI" type="number" step="any" placeholder="e.g. 0.5"></label></div>
+      <button class="run" onclick="ohm()">CALCULATE</button><div id="ohmOut" class="output">Enter two values.</div>
+    </div>
+    <div class="panel calc"><div class="panel-head">POWER</div>
+      <div class="form-grid two"><label>Voltage (V)<input id="powV" type="number" step="any"></label><label>Current (A)<input id="powI" type="number" step="any"></label></div>
+      <button class="run" onclick="power()">CALCULATE</button><div id="powOut" class="output">P = V × I</div>
+    </div>
+    <div class="panel calc"><div class="panel-head">LED RESISTOR</div>
+      <div class="form-grid three"><label>Supply V<input id="ledV" type="number" step="any" value="12"></label><label>LED Vf<input id="ledF" type="number" step="any" value="2"></label><label>Current mA<input id="ledI" type="number" step="any" value="20"></label></div>
+      <button class="run" onclick="led()">CALCULATE</button><div id="ledOut" class="output">R = (Vs − Vf) / I</div>
+    </div>
+    <div class="panel calc"><div class="panel-head">FREQUENCY / PERIOD</div>
+      <label>Frequency (Hz)<input id="freq" type="number" step="any" placeholder="e.g. 50"></label>
+      <button class="run" onclick="period()">CALCULATE</button><div id="freqOut" class="output">T = 1 / f</div>
+    </div>
+    <div class="panel calc"><div class="panel-head">RESISTORS IN SERIES</div>
+      <label>Values (Ω), comma separated<input id="series" placeholder="100, 220, 330"></label>
+      <button class="run" onclick="seriesCalc()">CALCULATE</button><div id="seriesOut" class="output">Rtotal = R1 + R2 + ...</div>
+    </div>
+    <div class="panel calc"><div class="panel-head">RESISTORS IN PARALLEL</div>
+      <label>Values (Ω), comma separated<input id="parallel" placeholder="100, 220, 330"></label>
+      <button class="run" onclick="parallelCalc()">CALCULATE</button><div id="parallelOut" class="output">1/Rtotal = Σ(1/R)</div>
+    </div>
+  </div>
+  <div class="card-grid" id="electronicsCards"></div>
+</section>
+
+<section id="tools" class="view">
+  <div class="hero compact"><div><span class="eyebrow">ENGINEERING UTILITY DECK</span><h1>TOOLS</h1><p>Command builder, unit conversions, notes and reference material.</p></div></div>
+  <div class="panel">
+    <div class="panel-head">UNIT CONVERTER</div>
+    <div class="form-grid three"><label>Value<input id="convValue" type="number" step="any" value="1"></label>
+    <label>From<select id="convFrom"><option>V</option><option>mV</option><option>A</option><option>mA</option><option>Ω</option><option>kΩ</option><option>MHz</option><option>kHz</option><option>Hz</option><option>W</option><option>mW</option></select></label>
+    <label>To<select id="convTo"><option>mV</option><option>V</option><option>A</option><option>mA</option><option>Ω</option><option>kΩ</option><option>Hz</option><option>kHz</option><option>MHz</option><option>W</option><option>mW</option></select></label></div>
+    <button class="run" onclick="convert()">CONVERT</button><div id="convOut" class="output">Ready.</div>
+  </div>
+  <div class="panel">
+    <div class="panel-head">NOTES</div>
+    <textarea id="notes" placeholder="Write study notes, lab observations, commands or calculations here..."></textarea>
+    <div class="actions"><button class="run" onclick="saveNotes()">SAVE LOCAL NOTE</button><button class="ghost" onclick="clearNotes()">CLEAR</button></div>
+  </div>
+</section>
+
+<section id="learning" class="view">
+  <div class="hero compact"><div><span class="eyebrow">KNOWLEDGE CORE</span><h1>LEARNING</h1><p>Search → Understand → Copy → Practice. Use the lab tools with authorization.</p></div></div>
+  <div class="card-grid" id="learningCards"></div>
+</section>
+</main>
+</div>
+<div id="toast"></div>
+<script src="app.js"></script>
+</body>
+</html>
